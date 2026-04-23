@@ -1,0 +1,21 @@
+version: '3'
+silent: true
+
+# This can't go in included task files.
+dotenv: [ database/settings.env ]
+
+includes:
+  db:
+    taskfile: ./database/Taskfile.yml
+    dir: ./database
+
+tasks:
+  run:
+    - cabal run web-hs
+  build:
+    - cabal build
+  db:
+    deps: [ db:bounce ]
+  ports:
+    cmds:
+      - lsof -nP -iTCP -sTCP:LISTEN

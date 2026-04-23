@@ -1,0 +1,8 @@
+db:
+  host: "localhost"
+  port: 3001
+  user: "postgres"
+  password: "password"
+  database: "webhsdb"
+server:
+  port: 3000
