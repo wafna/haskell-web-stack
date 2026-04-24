@@ -12,8 +12,8 @@ includes:
 tasks:
   server:
     - cabal run server
-  client:
-    - cabal run client -- {{.CLI_ARGS}}
+  demo:
+    - cabal run demo -- {{.CLI_ARGS}}
   build:
     - cabal build
   db:

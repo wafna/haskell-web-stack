@@ -3,9 +3,6 @@
 module Main where
 
 import Data.Time (getZonedTime, zonedTimeToLocalTime)
-import Data.Maybe (fromMaybe)
-import Text.Read (readMaybe)
-import System.Environment (lookupEnv)
 import Network.HTTP.Types (status201)
 import Web.Scotty.Trans (scottyT, ActionT, get, put, text, json, jsonData, status)
 import Control.Monad.IO.Class (liftIO)
@@ -13,6 +10,7 @@ import Control.Monad.Trans.Class (lift)
 import Database
 import Domain
 import API
+import Util
 
 type Action = ActionT API
 
@@ -20,10 +18,9 @@ type Action = ActionT API
 main :: IO ()
 main = do
   pool <- initPool
-
-  sPort  <- fromMaybe 3000 . (>>= readMaybe) <$> lookupEnv "SERVER_PORT"
+  sPort  <- envInt "SERVER_PORT" 3000
   putStrLn $ "Starting server on port " ++ show sPort
-  scottyT sPort (runAPI pool) $ do
+  scottyT (fromIntegral sPort) (runAPI pool) $ do
     get "/" $ do
       text "Haskell HTTP server and PostgreSQL database."
 
