@@ -30,6 +30,7 @@ executable web-hs
                       uuid,
                       time,
                       aeson,
-                      http-types
+                      http-types,
+                      mtl
     hs-source-dirs:   app
     default-language: GHC2021

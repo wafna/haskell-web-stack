@@ -22,12 +22,12 @@ main = do
       text "Haskell HTTP server and PostgreSQL database."
 
     get "/widgets" $ do
-      (liftIO $ listWidgets pool) >>= json
+      (liftIO $ runAPI pool listWidgets) >>= json
 
     put "/widgets" $ do
       c <- jsonData :: ActionM CreateWidget
       now <- liftIO getZonedTime
       widget <- liftIO $ fromWip $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
-      _ <- liftIO $ createWidget pool widget
+      _ <- liftIO $ runAPI pool $ createWidget widget
       status status201
       json widget
