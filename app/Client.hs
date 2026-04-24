@@ -5,6 +5,7 @@ module Main where
 import System.Environment (getArgs)
 import Data.Text (pack)
 import Network.HTTP.Simple
+import qualified Data.ByteString.Lazy.Char8 as L8
 import Domain.Widget
 import Util
 
@@ -23,7 +24,7 @@ helloRequest = do
     request <- parseRequest "GET http://localhost:3000/"
     response <- httpLBS request
     let body = getResponseBody response
-    writeLine ["RESPONSE: ", show body]
+    putStrLn (L8.unpack body)
     return ()
 
 createWidgetRequest :: String -> IO ()
