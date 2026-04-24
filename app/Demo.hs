@@ -3,8 +3,6 @@ module Main where
 import Control.Monad.IO.Class (liftIO)
 import System.Environment (getArgs)
 import Data.Text (pack)
-import Data.Time (getCurrentTime)
-import Data.Time.LocalTime (utcToLocalTime, getCurrentTimeZone)
 import Domain.Widget
 import Util
 import Database
@@ -17,11 +15,8 @@ main = do
     pool <- initPool
     if null args
         then putStrLn "No widgets specified."
-        else doStuff pool $  do
-            now <- liftIO getCurrentTime
-            tz <- liftIO getCurrentTimeZone
-            let localNow = utcToLocalTime tz now
-            mapM_ (\name -> createWidget (WidgetWip (pack name) localNow)) args
+        else doStuff pool $ do
+            mapM_ (createWidget . CreateWidget . pack) args
     putStrLn "Widgets!"
     doStuff pool $ do
         w1 <- listWidgets

@@ -7,6 +7,7 @@ module API (
     listWidgets, createWidget
 ) where
 
+import Data.Time (getZonedTime, zonedTimeToLocalTime)
 import System.IO
 import Data.Pool
 import Control.Monad.Reader
@@ -14,6 +15,7 @@ import Control.Monad.Except
 import Control.Monad.IO.Unlift
 import qualified Control.Exception as E
 import Data.Text (pack)
+import Domain.Wip
 import Domain.Widget
 import Domain.APIError
 import Database
@@ -39,9 +41,10 @@ listWidgets :: API [Widget]
 listWidgets = withErrorHandling $ API $ do
     runDB listWidgets_
 
-createWidget :: WidgetWip -> API Widget
-createWidget wip = withErrorHandling $ API $ do
-    widget <- liftIO $ fromWip wip
+createWidget :: CreateWidget -> API Widget
+createWidget c = withErrorHandling $ API $ do
+    now <- liftIO getZonedTime
+    widget <- liftIO $ fromWip $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
     _ <- runDB $ insertWidget_ widget
     return widget
 
