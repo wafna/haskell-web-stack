@@ -1,31 +1,39 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module Database where
+module Database (
+    ConnPool, initPool,
+    createWidget, listWidgets
+    ) where
 
+import System.Environment (lookupEnv)
+import Data.Maybe (fromMaybe)
+import Text.Read (readMaybe)
 import Data.Pool
 import GHC.Generics
 import Database.PostgreSQL.Simple
+import Util
 import Domain
 
-data DBConfig = DBConfig
-  { host     :: String
-  , port     :: Int
-  , user     :: String
-  , password :: String
-  , database :: String
-  } deriving (Show, Generic)
+type ConnPool = Pool Connection
 
-initPool :: DBConfig -> IO (Pool Connection)
-initPool cfg =
-  let connInfo = ConnectInfo
-        { connectHost     = host cfg
-        , connectPort     = fromIntegral (port cfg)
-        , connectUser     = user cfg
-        , connectPassword = password cfg
-        , connectDatabase = database cfg
-        }
-  in newPool $ defaultPoolConfig (connect connInfo) close 0.5 10
+initPool :: IO ConnPool
+initPool = do
+    host <- fromMaybe "localhost" <$> lookupEnv "DB_HOST"
+    port <- fromMaybe 3001 . (>>= readMaybe) <$> lookupEnv "DB_PORT"
+    database <- fromMaybe "web_hs" <$> lookupEnv "DB_DATABASE"
+    username <- fromMaybe "username" <$> lookupEnv "DB_USER"
+    password <- fromMaybe "password" <$> lookupEnv "DB_PASSWORD"
+    writeLine ["Connecting to database ", database, "@", host, ":", show port]
+--    let connInfo = ConnectInfo
+--        { connectHost     = host
+--        , connectPort     = fromIntegral port
+--        , connectUser     = username
+--        , connectPassword = password
+--        , connectDatabase = database
+--        }
+    let connInfo = ConnectInfo host (fromIntegral port) username password database
+    newPool $ defaultPoolConfig (connect connInfo) close 0.5 10
 
 listWidgets :: Pool Connection -> IO [Widget]
 listWidgets pool = withResource pool $ \conn -> do

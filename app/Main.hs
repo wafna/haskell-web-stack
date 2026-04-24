@@ -10,19 +10,12 @@ import Network.HTTP.Types (status201)
 import Web.Scotty
 import Domain
 import Database
-import Util
 
 main :: IO ()
 main = do
-  dbHost <- fromMaybe "localhost" <$> lookupEnv "DB_HOST"
-  dbPort <- fromMaybe 3001 . (>>= readMaybe) <$> lookupEnv "DB_PORT"
-  dbUser <- fromMaybe "username" <$> lookupEnv "DB_USER"
-  dbPass <- fromMaybe "password" <$> lookupEnv "DB_PASSWORD"
-  dbName <- fromMaybe "web_hs" <$> lookupEnv "DB_DATABASE"
-  sPort  <- fromMaybe 3000 . (>>= readMaybe) <$> lookupEnv "SERVER_PORT"
-  writeLine ["Connecting to database ", dbName, "@", dbHost, ":", show dbPort]
-  pool <- initPool $ DBConfig dbHost dbPort dbUser dbPass dbName
+  pool <- initPool
 
+  sPort  <- fromMaybe 3000 . (>>= readMaybe) <$> lookupEnv "SERVER_PORT"
   putStrLn $ "Starting server on port " ++ show sPort
   scotty sPort $ do
     get "/" $ do
