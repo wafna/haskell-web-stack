@@ -15,10 +15,10 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
-executable web-hs
+executable server
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
-    main-is:          Main.hs
+    main-is:          Server.hs
     other-modules:    Util, Domain, Database, API
     -- other-extensions:
     build-depends:    base,
@@ -31,6 +31,27 @@ executable web-hs
                       time,
                       aeson,
                       http-types,
-                      mtl
+                      mtl,
+                      transformers
+    hs-source-dirs:   app
+    default-language: GHC2021
+
+executable client
+    import:           warnings
+    ghc-options:      -threaded -with-rtsopts=-N
+    main-is:          Client.hs
+    other-modules:    Util, Domain, Database, API
+    -- other-extensions:
+    build-depends:    base,
+                      postgresql-simple,
+                      resource-pool,
+                      bytestring,
+                      text,
+                      uuid,
+                      time,
+                      aeson,
+                      http-types,
+                      mtl,
+                      transformers
     hs-source-dirs:   app
     default-language: GHC2021

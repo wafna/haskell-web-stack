@@ -10,8 +10,10 @@ includes:
     dir: ./database
 
 tasks:
-  run:
-    - cabal run web-hs
+  server:
+    - cabal run server
+  client:
+    - cabal run client -- {{.CLI_ARGS}}
   build:
     - cabal build
   db:

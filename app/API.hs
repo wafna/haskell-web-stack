@@ -1,9 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module API (
-    initPool, API, runAPI,
-    listWidgets, createWidget
-    )where
+module API where
 
 import Data.Pool
 import Control.Monad.Reader

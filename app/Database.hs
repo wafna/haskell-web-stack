@@ -1,25 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
 
 module Database (
     ConnPool, initPool,
     ) where
 
 import System.Environment (lookupEnv)
+import Data.Word
 import Data.Maybe (fromMaybe)
 import Text.Read (readMaybe)
 import Data.Pool
-import GHC.Generics
 import Database.PostgreSQL.Simple
 import Util
-import Domain
 
 type ConnPool = Pool Connection
 
 initPool :: IO ConnPool
 initPool = do
     host <- fromMaybe "localhost" <$> lookupEnv "DB_HOST"
-    port <- fromMaybe 3001 . (>>= readMaybe) <$> lookupEnv "DB_PORT"
+    port <- fromMaybe (3001 :: Word16) . (>>= readMaybe) <$> lookupEnv "DB_PORT"
     database <- fromMaybe "web_hs" <$> lookupEnv "DB_DATABASE"
     username <- fromMaybe "username" <$> lookupEnv "DB_USER"
     password <- fromMaybe "password" <$> lookupEnv "DB_PASSWORD"
