@@ -37,6 +37,11 @@ withErrorHandling (API m) = API $ ReaderT $ \pool ->
         hPutStrLn stderr $ "API Error: " ++ show (e :: E.SomeException)
         E.throwIO $ InternalError $ pack $ show (e :: E.SomeException)
 
+runDB :: (MonadReader (Pool a) m, MonadIO m) => (a -> IO b) -> m b
+runDB f = do
+    pool <- ask
+    liftIO $ withResource pool f
+
 listWidgets :: API [Widget]
 listWidgets = withErrorHandling $ API $ do
     runDB listWidgets_
@@ -45,11 +50,7 @@ createWidget :: CreateWidget -> API Widget
 createWidget c = withErrorHandling $ API $ do
     now <- liftIO getZonedTime
     widget <- liftIO $ fromWip $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
-    _ <- runDB $ insertWidget_ widget
-    return widget
-
-runDB :: (MonadReader (Pool a) m, MonadIO m) => (a -> IO b) -> m b
-runDB f = do
-    pool <- ask
-    liftIO $ withResource pool f
-
+    n <- runDB $ insertWidget_ widget
+    if 1 /= n
+        then error "No record inserted."
+        else return widget
