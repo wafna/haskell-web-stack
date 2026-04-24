@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Domain where
-  
+module Domain.Widget where
+
 import Data.Text (Text)
 import Data.Time (LocalTime)
 import Data.UUID (UUID)
@@ -9,8 +9,6 @@ import Data.UUID.V4 (nextRandom)
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 import Database.PostgreSQL.Simple (FromRow, ToRow)
-
-import qualified Control.Exception as E
 
 data Widget = Widget
   { widgetId  :: UUID
@@ -32,12 +30,3 @@ fromWip (WidgetWip name createdAt) = do
 data CreateWidget = CreateWidget
     { createWidgetName :: Text
     }   deriving (Show, Generic, ToJSON, FromJSON)
-
-data APIError
-    = NotFound Text
-    | InvalidInput Text
-    | InternalError Text
-    deriving (Show, Generic, ToJSON, FromJSON)
-
-instance E.Exception APIError
-

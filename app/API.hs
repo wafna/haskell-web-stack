@@ -2,6 +2,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module API (
+    APIError(..),
     API, runAPI,
     listWidgets, createWidget
 ) where
@@ -13,7 +14,8 @@ import Control.Monad.Except
 import Control.Monad.IO.Unlift
 import qualified Control.Exception as E
 import Data.Text (pack)
-import Domain
+import Domain.Widget
+import Domain.APIError
 import Database
 
 newtype API a = API { unAPI :: ReaderT ConnPool IO a }

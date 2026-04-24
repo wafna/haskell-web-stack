@@ -6,7 +6,7 @@ import Data.Pool
 import GHC.Int
 import Database.PostgreSQL.Simple
 import Util
-import Domain
+import Domain.Widget
 
 type ConnPool = Pool Connection
 

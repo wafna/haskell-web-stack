@@ -19,7 +19,7 @@ executable server
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
     main-is:          Server.hs
-    other-modules:    Util, Domain, Database, API
+    other-modules:    Util, Database, API, Domain.Widget, Domain.APIError
     -- other-extensions:
     build-depends:    base,
                       scotty,
@@ -41,7 +41,7 @@ executable demo
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
     main-is:          Demo.hs
-    other-modules:    Util, Domain, Database, API
+    other-modules:    Util, Database, API, Domain.Widget, Domain.APIError
     -- other-extensions:
     build-depends:    base,
                       postgresql-simple,

@@ -5,7 +5,7 @@ import System.Environment (getArgs)
 import Data.Text (pack)
 import Data.Time (getCurrentTime)
 import Data.Time.LocalTime (utcToLocalTime, getCurrentTimeZone)
-import Domain
+import Domain.Widget
 import Util
 import Database
 import API

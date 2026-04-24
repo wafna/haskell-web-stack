@@ -9,7 +9,7 @@ import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Class (lift)
 import Control.Exception (throwIO)
 import Database
-import Domain
+import Domain.Widget
 import API
 import Util
 
