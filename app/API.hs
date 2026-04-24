@@ -15,6 +15,7 @@ import Control.Monad.Except
 import Control.Monad.IO.Unlift
 import qualified Control.Exception as E
 import Data.Text (pack)
+import Domain.Wip
 import Domain.Widget
 import Domain.APIError
 import Database

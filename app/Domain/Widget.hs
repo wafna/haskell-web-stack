@@ -9,6 +9,7 @@ import Data.UUID.V4 (nextRandom)
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 import Database.PostgreSQL.Simple (FromRow, ToRow)
+import Domain.Wip
 
 data Widget = Widget
   { widgetId  :: UUID
@@ -22,12 +23,12 @@ instance ToRow Widget
 
 data WidgetWip = WidgetWip Text LocalTime
 
-instance Wip WidgetWip where
-    fromWip :: WidgetWip -> IO Widget
-    fromWip (WidgetWip name createdAt) = do
-      uuid <- nextRandom
-      return $ Widget uuid name createdAt Nothing
+instance Wip WidgetWip (IO Widget) where
+  fromWip :: WidgetWip -> IO Widget
+  fromWip (WidgetWip name createdAt) = do
+    uuid <- nextRandom
+    return $ Widget uuid name createdAt Nothing
 
 data CreateWidget = CreateWidget
     { createWidgetName :: Text
-    }   deriving (Show, Generic, ToJSON, FromJSON)
+    } deriving (Show, Generic, ToJSON, FromJSON)
