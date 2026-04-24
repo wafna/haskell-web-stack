@@ -19,7 +19,7 @@ executable web-hs
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
     main-is:          Main.hs
-    other-modules:    Domain
+    other-modules:    Domain, Database
     -- other-extensions:
     build-depends:    base,
                       scotty,
