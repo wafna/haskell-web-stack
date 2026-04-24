@@ -7,15 +7,12 @@ import Data.Maybe (fromMaybe)
 import Text.Read (readMaybe)
 import System.Environment (lookupEnv)
 import Network.HTTP.Types (status201)
-import Web.Scotty (get, put, text, json, jsonData, status)
-import Web.Scotty.Trans (scottyT)
-import Control.Monad (liftM)
+import Web.Scotty.Trans (scottyT, ActionT, get, put, text, json, jsonData, status)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Class (lift)
 import Database
 import Domain
 import API
-import Web.Scotty.Trans (ActionT)
 
 type Action = ActionT API
 
@@ -29,13 +26,13 @@ main = do
     get "/" $ do
       text "Haskell HTTP server and PostgreSQL database."
 
---    get "/widgets" $ do
---      widgets <- lift listWidgets
---      json widgets
---
---    put "/widgets" $ do
---      c <- jsonData :: Action CreateWidget
---      now <- liftIO getZonedTime
---      widget <- lift $ createWidget $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
---      status status201
---      json widget
+    get "/widgets" $ do
+      widgets <- lift listWidgets
+      json widgets
+
+    put "/widgets" $ do
+      c <- jsonData :: Action CreateWidget
+      now <- liftIO getZonedTime
+      widget <- lift $ createWidget $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
+      status status201
+      json widget

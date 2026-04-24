@@ -32,7 +32,8 @@ executable server
                       aeson,
                       http-types,
                       mtl,
-                      transformers
+                      transformers,
+                      unliftio-core
     hs-source-dirs:   app
     default-language: GHC2021
 
@@ -52,6 +53,7 @@ executable client
                       aeson,
                       http-types,
                       mtl,
-                      transformers
+                      transformers,
+                      unliftio-core
     hs-source-dirs:   app
     default-language: GHC2021
