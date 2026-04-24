@@ -5,7 +5,9 @@ module API where
 
 import Data.Pool
 import Control.Monad.Reader
+import Control.Monad.Except
 import Control.Monad.IO.Unlift
+import qualified Control.Exception as E
 import Database.PostgreSQL.Simple
 import Domain
 import Database
@@ -13,8 +15,13 @@ import Database
 newtype API a = API { unAPI :: ReaderT ConnPool IO a }
     deriving (Functor, Applicative, Monad, MonadIO, MonadReader ConnPool, MonadUnliftIO)
 
-runAPI :: ConnPool -> API a -> IO a
-runAPI pool (API m) = runReaderT m pool
+instance MonadError APIError API where
+    throwError = liftIO . E.throwIO
+    catchError (API m) h = API $ ReaderT $ \pool ->
+        E.catch (runReaderT m pool) (\e -> runReaderT (unAPI $ h e) pool)
+
+runAPI :: ConnPool -> API a -> IO (Either APIError a)
+runAPI pool (API m) = E.try $ runReaderT m pool
 
 listWidgets :: API [Widget]
 listWidgets = API $ do

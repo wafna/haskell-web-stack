@@ -10,6 +10,8 @@ import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 import Database.PostgreSQL.Simple (FromRow, ToRow)
 
+import qualified Control.Exception as E
+
 data Widget = Widget
   { widgetId  :: UUID
   , name      :: Text
@@ -30,4 +32,12 @@ fromWip (WidgetWip name createdAt) = do
 data CreateWidget = CreateWidget
     { createWidgetName :: Text
     }   deriving (Show, Generic, ToJSON, FromJSON)
+
+data APIError
+    = NotFound Text
+    | InvalidInput Text
+    | InternalError Text
+    deriving (Show, Generic, ToJSON, FromJSON)
+
+instance E.Exception APIError
 
