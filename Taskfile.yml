@@ -18,6 +18,8 @@ tasks:
     - cabal run client -- {{.CLI_ARGS}}
   build:
     - cabal build
+  clean:
+    - cabal clean
   ports:
     cmds:
       - lsof -nP -iTCP -sTCP:LISTEN
