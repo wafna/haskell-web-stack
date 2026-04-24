@@ -14,39 +14,34 @@ A simple Haskell web server using Scotty, PostgreSQL with connection pooling, an
 sudo apt-get update && sudo apt-get install -y libpq-dev zlib1g-dev
 ```
 
-## Installation
-
-```bash
-task build
-```
-
 ## Usage
 
 1. Start the database.
 
-```zsh
+```bash
 task db:run
 ```
 
-2. Run the server:
+2. Run the ***server***:
 
 ```bash
 task server
 ```
 
-3. Use the `route` command to test:
+3. Run the ***client*** app to connect to the HTTP API (adding two widgets):
 
 ```bash
-./route hello
-# Initially empty.
-./route get
-# Accepts multiple names to put.
-./route put herp derp
-./route get
+task client -- herp derp
 ```
 
-4. Use the `demo` app to connect to the database.
+4. Run the ***demo*** app to connect to the database directly (adding three widgets).
 
 ```bash
 task demo -- huey dewey louie
+```
+
+5. Kill the database with
+
+```bash
+task db:stop
 ```
