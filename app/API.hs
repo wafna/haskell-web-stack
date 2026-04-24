@@ -13,7 +13,6 @@ import Control.Monad.Except
 import Control.Monad.IO.Unlift
 import qualified Control.Exception as E
 import Data.Text (pack)
-import Database.PostgreSQL.Simple
 import Domain
 import Database
 
@@ -36,17 +35,16 @@ withErrorHandling (API m) = API $ ReaderT $ \pool ->
 
 listWidgets :: API [Widget]
 listWidgets = withErrorHandling $ API $ do
-    pool <- ask
-    liftIO $ withResource pool listWidgets_
+    runDB listWidgets_
 
 createWidget :: WidgetWip -> API Widget
 createWidget wip = withErrorHandling $ API $ do
     widget <- liftIO $ fromWip wip
-    pool <- ask
-    liftIO $ withResource pool $ \conn -> do
-        _ <- execute conn "INSERT INTO web_hs.widgets (id, name, created_at, deleted_at) VALUES (?, ?, ?, ?)" widget
-        return widget
+    _ <- runDB $ insertWidget_ widget
+    return widget
 
-listWidgets_ :: Connection -> IO [Widget]
-listWidgets_ conn =
-    query_ conn "SELECT id, name, created_at, deleted_at FROM web_hs.widgets" :: IO [Widget]
+runDB :: (MonadReader (Pool a) m, MonadIO m) => (a -> IO b) -> m b
+runDB f = do
+    pool <- ask
+    liftIO $ withResource pool f
+
