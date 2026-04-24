@@ -14,8 +14,7 @@ main = do
     args <- getArgs
     if null args
         then putStrLn "No widgets specified."
-        else do
-            mapM_ createWidgetRequest args
+        else mapM_ createWidgetRequest args
     putStrLn "Widgets!"
     listWidgetsRequest
 
