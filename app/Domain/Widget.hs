@@ -22,10 +22,11 @@ instance ToRow Widget
 
 data WidgetWip = WidgetWip Text LocalTime
 
-fromWip :: WidgetWip -> IO Widget
-fromWip (WidgetWip name createdAt) = do
-  uuid <- nextRandom
-  return $ Widget uuid name createdAt Nothing
+instance Wip WidgetWip where
+    fromWip :: WidgetWip -> IO Widget
+    fromWip (WidgetWip name createdAt) = do
+      uuid <- nextRandom
+      return $ Widget uuid name createdAt Nothing
 
 data CreateWidget = CreateWidget
     { createWidgetName :: Text
