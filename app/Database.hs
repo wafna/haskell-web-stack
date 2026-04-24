@@ -5,7 +5,6 @@ module Database where
 
 import Data.Pool
 import GHC.Generics
-import GHC.Int
 import Database.PostgreSQL.Simple
 import Domain
 
@@ -32,6 +31,7 @@ listWidgets :: Pool Connection -> IO [Widget]
 listWidgets pool = withResource pool $ \conn -> do
     query_ conn "SELECT id, name, created_at, deleted_at FROM web_hs.widgets" :: IO [Widget]
 
-createWidget :: Pool Connection -> Widget -> IO Int64
+createWidget :: Pool Connection -> Widget -> IO Int
 createWidget pool wip = withResource pool $ \conn -> do
-    execute conn "INSERT INTO web_hs.widgets (id, name, created_at, deleted_at) VALUES (?, ?, ?, ?)" wip
+    i <- execute conn "INSERT INTO web_hs.widgets (id, name, created_at, deleted_at) VALUES (?, ?, ?, ?)" wip
+    return $ fromIntegral i

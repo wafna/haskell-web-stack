@@ -1,6 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DeriveAnyClass #-}
 
 module Main where
 
@@ -12,6 +10,7 @@ import Network.HTTP.Types (status201)
 import Web.Scotty
 import Domain
 import Database
+import Util
 
 main :: IO ()
 main = do
@@ -21,9 +20,7 @@ main = do
   dbPass <- fromMaybe "password" <$> lookupEnv "DB_PASSWORD"
   dbName <- fromMaybe "web_hs" <$> lookupEnv "DB_DATABASE"
   sPort  <- fromMaybe 3000 . (>>= readMaybe) <$> lookupEnv "SERVER_PORT"
-
-  sequence_ $ fmap putStr ["Connecting to database ", dbName, "@", dbHost, ":", show dbPort]
-  putStrLn ""
+  writeLine ["Connecting to database ", dbName, "@", dbHost, ":", show dbPort]
   pool <- initPool $ DBConfig dbHost dbPort dbUser dbPass dbName
 
   putStrLn $ "Starting server on port " ++ show sPort
