@@ -9,7 +9,7 @@ import System.Environment (lookupEnv)
 import Network.HTTP.Types (status201)
 import Web.Scotty
 import Domain
-import Database
+import API
 
 main :: IO ()
 main = do
@@ -27,7 +27,6 @@ main = do
     put "/widgets" $ do
       c <- jsonData :: ActionM CreateWidget
       now <- liftIO getZonedTime
-      widget <- liftIO $ fromWip $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
-      _ <- liftIO $ runAPI pool $ createWidget widget
+      widget <- liftIO $ runAPI pool $ createWidget $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
       status status201
       json widget
