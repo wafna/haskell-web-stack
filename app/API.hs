@@ -6,6 +6,7 @@ module API (
     listWidgets, createWidget
 ) where
 
+import System.IO
 import Data.Pool
 import Control.Monad.Reader
 import Control.Monad.Except
@@ -29,7 +30,8 @@ runAPI pool (API m) = E.try $ runReaderT m pool
 
 withErrorHandling :: API a -> API a
 withErrorHandling (API m) = API $ ReaderT $ \pool ->
-    E.catch (runReaderT m pool) $ \e ->
+    E.catch (runReaderT m pool) $ \e -> do
+        hPutStrLn stderr $ "API Error: " ++ show (e :: E.SomeException)
         E.throwIO $ InternalError $ pack $ show (e :: E.SomeException)
 
 listWidgets :: API [Widget]
