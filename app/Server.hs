@@ -16,6 +16,7 @@ import API
 
 type Action = ActionT API
 
+-- Exposes the API over HTTP.
 main :: IO ()
 main = do
   pool <- initPool
