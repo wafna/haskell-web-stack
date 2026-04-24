@@ -16,8 +16,6 @@ tasks:
     - cabal run demo -- {{.CLI_ARGS}}
   build:
     - cabal build
-  db:
-    deps: [ db:bounce ]
   ports:
     cmds:
       - lsof -nP -iTCP -sTCP:LISTEN
