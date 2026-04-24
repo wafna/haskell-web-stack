@@ -18,10 +18,7 @@ main = do
     if null args
         then putStrLn "No widgets specified."
         else doStuff pool $  do
-            now <- liftIO getCurrentTime
-            tz <- liftIO getCurrentTimeZone
-            let localNow = utcToLocalTime tz now
-            mapM_ (\name -> createWidget (WidgetWip (pack name) localNow)) args
+            mapM_ (createWidget . CreateWidget . pack) args
     putStrLn "Widgets!"
     doStuff pool $ do
         w1 <- listWidgets

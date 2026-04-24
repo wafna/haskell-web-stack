@@ -2,10 +2,8 @@
 
 module Main where
 
-import Data.Time (getZonedTime, zonedTimeToLocalTime)
 import Network.HTTP.Types (status201)
 import Web.Scotty.Trans (scottyT, ActionT, get, put, text, json, jsonData, status)
-import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Class (lift)
 import Control.Exception (throwIO)
 import Database
@@ -31,8 +29,7 @@ main = do
 
     put "/widgets" $ do
       c <- jsonData :: Action CreateWidget
-      now <- liftIO getZonedTime
-      widget <- lift $ createWidget $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
+      widget <- lift $ createWidget c
       status status201
       json widget
 
