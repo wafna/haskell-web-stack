@@ -25,13 +25,13 @@ task build
 1. Start the database.
 
 ```zsh
-task -d database run
+task db:run
 ```
 
 2. Run the server:
 
 ```bash
-task run
+task server
 ```
 
 3. Use the `route` command to test:
@@ -43,4 +43,10 @@ task run
 # Accepts multiple names to put.
 ./route put herp derp
 ./route get
+```
+
+4. Use the `demo` app to connect to the database.
+
+```bash
+task demo -- huey dewey louie
 ```

@@ -37,10 +37,10 @@ executable server
     hs-source-dirs:   app
     default-language: GHC2021
 
-executable client
+executable demo
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
-    main-is:          Client.hs
+    main-is:          Demo.hs
     other-modules:    Util, Domain, Database, API
     -- other-extensions:
     build-depends:    base,
