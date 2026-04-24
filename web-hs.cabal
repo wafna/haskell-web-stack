@@ -61,3 +61,23 @@ executable demo
                       unliftio-core
     hs-source-dirs:   app
     default-language: GHC2021
+
+executable client
+    import:           warnings
+    ghc-options:      -threaded -with-rtsopts=-N
+    main-is:          Client.hs
+    other-modules:    Util,
+                      Domain.Wip, Domain.Widget, Domain.APIError
+    build-depends:    base,
+                      bytestring,
+                      text,
+                      uuid,
+                      time,
+                      aeson,
+                      http-conduit,
+                      http-types,
+                      mtl,
+                      transformers,
+                      postgresql-simple
+    hs-source-dirs:   app
+    default-language: GHC2021

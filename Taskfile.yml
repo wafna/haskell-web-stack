@@ -14,6 +14,8 @@ tasks:
     - cabal run server
   demo:
     - cabal run demo -- {{.CLI_ARGS}}
+  client:
+    - cabal run client -- {{.CLI_ARGS}}
   build:
     - cabal build
   ports:
