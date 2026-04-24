@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
 module Database where
@@ -5,6 +6,7 @@ module Database where
 import Data.Pool
 import GHC.Generics
 import Database.PostgreSQL.Simple
+import Domain
 
 data DBConfig = DBConfig
   { host     :: String
@@ -25,3 +27,6 @@ initPool cfg =
         }
   in newPool $ defaultPoolConfig (connect connInfo) close 0.5 10
 
+listWidgets :: Pool Connection -> IO [Widget]
+listWidgets pool = withResource pool $ \conn -> do
+    query_ conn "SELECT id, name, created_at, deleted_at FROM web_hs.widgets" :: IO [Widget]

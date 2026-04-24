@@ -34,9 +34,7 @@ main = do
       text "Haskell HTTP server and PostgreSQL database."
 
     get "/widgets" $ do
-      widgets <- liftIO $ withResource pool $ \conn -> do
-        query_ conn "SELECT id, name, created_at, deleted_at FROM web_hs.widgets" :: IO [Widget]
-      json widgets
+      (liftIO $ listWidgets pool) >>= json
 
     put "/widgets" $ do
       c <- jsonData :: ActionM CreateWidget
