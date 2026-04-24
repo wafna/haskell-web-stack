@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Domain where
-  
+module Domain.Widget where
+
 import Data.Text (Text)
 import Data.Time (LocalTime)
 import Data.UUID (UUID)
@@ -30,4 +30,3 @@ fromWip (WidgetWip name createdAt) = do
 data CreateWidget = CreateWidget
     { createWidgetName :: Text
     }   deriving (Show, Generic, ToJSON, FromJSON)
-
