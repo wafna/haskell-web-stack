@@ -19,9 +19,9 @@ type Action = ActionT API
 main :: IO ()
 main = do
   pool <- initPool
-  sPort  <- envInt "SERVER_PORT" 3000
-  putStrLn $ "Starting server on port " ++ show sPort
-  scottyT (fromIntegral sPort) (runAPIOrThrow pool) $ do
+  port  <- envInt "SERVER_PORT" 3000
+  putStrLn $ "Starting server on port " ++ show port
+  scottyT (fromIntegral port) (runAPIOrThrow pool) $ do
     get "/" $ do
       text "Haskell HTTP server and PostgreSQL database."
 
