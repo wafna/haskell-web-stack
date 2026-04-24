@@ -5,11 +5,9 @@
 module Main where
 
 import Data.Time (getZonedTime, zonedTimeToLocalTime)
-import Data.Pool
 import Data.Maybe (fromMaybe)
 import Text.Read (readMaybe)
 import System.Environment (lookupEnv)
-import Database.PostgreSQL.Simple
 import Network.HTTP.Types (status201)
 import Web.Scotty
 import Domain
@@ -40,7 +38,6 @@ main = do
       c <- jsonData :: ActionM CreateWidget
       now <- liftIO getZonedTime
       widget <- liftIO $ fromWip $ WidgetWip (createWidgetName c) (zonedTimeToLocalTime now)
-      _ <- liftIO $ withResource pool $ \conn -> do
-        execute conn "INSERT INTO web_hs.widgets (id, name, created_at, deleted_at) VALUES (?, ?, ?, ?)" widget
+      _ <- liftIO $ createWidget pool widget
       status status201
       json widget
