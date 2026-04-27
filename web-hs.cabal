@@ -18,8 +18,8 @@ common warnings
 executable server
     import:           warnings
     ghc-options:      -threaded -with-rtsopts=-N
-    main-is:          Server.hs
-    other-modules:    Util,
+    main-is:          Main.hs
+    other-modules:    Server, Util,
                       Domain.Wip, Domain.Widget, Domain.APIError,
                       Database, API
     -- other-extensions:
@@ -38,6 +38,37 @@ executable server
                       transformers,
                       unliftio-core
     hs-source-dirs:   app
+    default-language: GHC2021
+
+test-suite server-test
+    import:           warnings
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test, app
+    main-is:          Spec.hs
+    other-modules:    ServerSpec,
+                      Util,
+                      Domain.Wip, Domain.Widget, Domain.APIError,
+                      Database, API, Server
+    build-tool-depends: hspec-discover:hspec-discover
+    build-depends:    base,
+                      scotty,
+                      warp,
+                      wai,
+                      wai-extra,
+                      hspec,
+                      hspec-wai,
+                      hspec-wai-json,
+                      postgresql-simple,
+                      resource-pool,
+                      bytestring,
+                      text,
+                      uuid,
+                      time,
+                      aeson,
+                      http-types,
+                      mtl,
+                      transformers,
+                      unliftio-core
     default-language: GHC2021
 
 executable demo

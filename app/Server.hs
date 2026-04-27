@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main where
+module Server (main, app, runAPIOrThrow) where
 
 import Network.HTTP.Types (status201)
 import Web.Scotty.Trans (scottyOptsT, Options(..), defaultOptions, ActionT, get, put, text, json, jsonData, status)
@@ -27,7 +27,9 @@ main = do
                    $ setHost (fromString host)
                    $ settings defaultOptions
 
-  scottyOptsT (defaultOptions { settings = warpSettings }) (runAPIOrThrow pool) $ do
+  scottyOptsT (defaultOptions { settings = warpSettings }) (runAPIOrThrow pool) (app pool)
+
+app pool = do
     get "/" $ do
       text "Haskell HTTP server and PostgreSQL database."
 

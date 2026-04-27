@@ -10,16 +10,18 @@ includes:
     dir: ./database
 
 tasks:
+  build:
+    - cabal build
+  clean:
+    - cabal clean
+  test:
+    - cabal test server-test
   server:
     - cabal run server
   demo:
     - cabal run demo -- {{.CLI_ARGS}}
   client:
     - cabal run client -- {{.CLI_ARGS}}
-  build:
-    - cabal build
-  clean:
-    - cabal clean
   ports:
     cmds:
       - lsof -nP -iTCP -sTCP:LISTEN
