@@ -46,6 +46,7 @@ test-suite server-test
     hs-source-dirs:   test, app
     main-is:          Spec.hs
     other-modules:    ServerSpec,
+                      Docker,
                       Util,
                       Domain.Wip, Domain.Widget, Domain.APIError,
                       Database, API, Server
@@ -68,7 +69,8 @@ test-suite server-test
                       http-types,
                       mtl,
                       transformers,
-                      unliftio-core
+                      unliftio-core,
+                      process
     default-language: GHC2021
 
 executable demo
