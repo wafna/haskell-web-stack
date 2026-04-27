@@ -24,8 +24,7 @@ main = do
       text "Haskell HTTP server and PostgreSQL database."
 
     get "/widgets" $ do
-      widgets <- lift listWidgets
-      json widgets
+      lift listWidgets >>= json
 
     put "/widgets" $ do
       c <- jsonData :: Action CreateWidget
