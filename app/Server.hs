@@ -3,8 +3,10 @@
 module Main where
 
 import Network.HTTP.Types (status201)
-import Web.Scotty.Trans (scottyT, ActionT, get, put, text, json, jsonData, status)
+import Web.Scotty.Trans (scottyOptsT, Options(..), defaultOptions, ActionT, get, put, text, json, jsonData, status)
+import Network.Wai.Handler.Warp (setPort, setHost)
 import Control.Monad.Trans.Class (lift)
+import Data.String (fromString)
 import Control.Exception (throwIO)
 import Database
 import Domain.Widget
@@ -18,8 +20,14 @@ main :: IO ()
 main = do
   pool <- initPool
   port  <- envInt "SERVER_PORT" 3000
-  putStrLn $ "Starting server on port " ++ show port
-  scottyT (fromIntegral port) (runAPIOrThrow pool) $ do
+  host  <- envString "SERVER_HOST" "0.0.0.0"
+  putStrLn $ "Starting server on " ++ host ++ ":" ++ show port
+
+  let warpSettings = setPort port
+                   $ setHost (fromString host)
+                   $ settings defaultOptions
+
+  scottyOptsT (defaultOptions { settings = warpSettings }) (runAPIOrThrow pool) $ do
     get "/" $ do
       text "Haskell HTTP server and PostgreSQL database."
 

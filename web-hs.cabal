@@ -25,6 +25,7 @@ executable server
     -- other-extensions:
     build-depends:    base,
                       scotty,
+                      warp,
                       postgresql-simple,
                       resource-pool,
                       bytestring,
