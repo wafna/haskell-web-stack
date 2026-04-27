@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Server (main, app, runAPIOrThrow) where
+module Server (runServer, app, runAPIOrThrow) where
 
 import Network.HTTP.Types (status201)
 import Web.Scotty.Trans (scottyOptsT, Options(..), defaultOptions, ActionT, get, put, text, json, jsonData, status)
@@ -16,8 +16,8 @@ import Util
 type Action = ActionT API
 
 -- Exposes the API over HTTP.
-main :: IO ()
-main = do
+runServer :: IO ()
+runServer = do
   pool <- initPool
   port  <- envInt "SERVER_PORT" 3000
   host  <- envString "SERVER_HOST" "0.0.0.0"

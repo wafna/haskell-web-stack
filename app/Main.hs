@@ -3,4 +3,4 @@ module Main where
 import qualified Server
 
 main :: IO ()
-main = runServer
+main = Server.runServer
